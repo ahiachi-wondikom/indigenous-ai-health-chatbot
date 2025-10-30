@@ -47,10 +47,16 @@ st.markdown("""
     .user-message {
         background-color: #E3F2FD;
         border-left: 5px solid #1E88E5;
+        color: #1565C0;  /* Dark blue text - READABLE! */
     }
     .bot-message {
         background-color: #F1F8E9;
         border-left: 5px solid #4CAF50;
+        color: #2E7D32;  /* Dark green text - READABLE! */
+    }
+    /* Make sure all text in chat messages is dark */
+    .chat-message strong {
+        color: #212121;  /* Almost black for labels */
     }
     .stButton>button {
         width: 100%;
@@ -64,6 +70,7 @@ st.markdown("""
         border-radius: 5px;
         border-left: 4px solid #FFC107;
         margin-top: 1rem;
+        color: #856404;  /* Dark yellow/brown for warning text */
     }
 </style>
 """, unsafe_allow_html=True)
