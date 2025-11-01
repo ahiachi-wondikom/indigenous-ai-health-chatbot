@@ -1,15 +1,13 @@
-# Core dependencies
+# Core
 streamlit==1.28.0
 python-dotenv==1.0.0
 
-# AI/ML models - Updated for Python 3.13 compatibility
-sentence-transformers==2.7.0
-transformers==4.40.0
+# AI/ML - Use versions with pre-built wheels
+sentence-transformers==3.0.0
+transformers==4.44.0
 torch==2.5.0
 
 # APIs
-pinecone-client==5.0.0
-groq==0.4.0
+pinecone==5.3.1
+groq==0.11.0
 
-# Translation support
-sentencepiece==0.1.99
