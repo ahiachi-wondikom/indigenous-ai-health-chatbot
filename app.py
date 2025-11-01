@@ -76,13 +76,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ========== INITIALIZE MODELS (Cache for performance) ==========
+# ========== INITIALIZE MODELS (Cache for performance) ==========
 @st.cache_resource
 def load_models():
     """Load all models once and cache them"""
     
     with st.spinner("🔄 Loading AI models... (This takes a minute on first run)"):
+        # Get API keys - works both locally (.env) and on Streamlit Cloud (secrets)
+        try:
+            # Try Streamlit Cloud secrets first
+            pinecone_key = st.secrets["PINECONE_API_KEY"]
+            groq_key = st.secrets["GROQ_API_KEY"]
+        except (KeyError, FileNotFoundError):
+            # Fall back to .env file (local development)
+            pinecone_key = os.getenv("PINECONE_API_KEY")
+            groq_key = os.getenv("GROQ_API_KEY")
+        
         # Pinecone
-        pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+        pc = Pinecone(api_key=pinecone_key)
         index = pc.Index("medicalbot")
         
         # Embedding model
@@ -93,7 +104,7 @@ def load_models():
         tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
         
         # Groq
-        groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        groq_client = Groq(api_key=groq_key)
     
     return index, embedding_model, translator, tokenizer, groq_client
 
