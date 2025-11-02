@@ -21,7 +21,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 # ========== CUSTOM CSS ==========
 st.markdown("""
 <style>
@@ -75,22 +74,23 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ========== INITIALIZE MODELS (Cache for performance) ==========
-# ========== INITIALIZE MODELS (Cache for performance) ==========
+def get_api_key(key_name):
+    """Get API key from Streamlit secrets or environment"""
+    # Try secrets first (Streamlit Cloud)
+    if hasattr(st, 'secrets') and key_name in st.secrets:
+        return st.secrets[key_name]
+    # Fall back to environment variable (local)
+    return os.getenv(key_name)
+
+# ========== INITIALIZE MODELS ==========
 @st.cache_resource
 def load_models():
     """Load all models once and cache them"""
     
     with st.spinner("🔄 Loading AI models... (This takes a minute on first run)"):
-        # Get API keys - works both locally (.env) and on Streamlit Cloud (secrets)
-        try:
-            # Try Streamlit Cloud secrets first
-            pinecone_key = st.secrets["PINECONE_API_KEY"]
-            groq_key = st.secrets["GROQ_API_KEY"]
-        except (KeyError, FileNotFoundError):
-            # Fall back to .env file (local development)
-            pinecone_key = os.getenv("PINECONE_API_KEY")
-            groq_key = os.getenv("GROQ_API_KEY")
+        # Get API keys
+        pinecone_key = get_api_key("PINECONE_API_KEY")
+        groq_key = get_api_key("GROQ_API_KEY")
         
         # Pinecone
         pc = Pinecone(api_key=pinecone_key)
@@ -111,6 +111,7 @@ def load_models():
 # Load models
 index, embedding_model, translator, tokenizer, groq_client = load_models()
 
+# (rest of your code continues...)
 # Language codes
 LANGUAGES = {
     "english": "eng_Latn",
