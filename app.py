@@ -382,7 +382,7 @@ for message in st.session_state.messages:
                     
                     ---
                     """)
-
+ 
 # Chat input
 user_input = st.chat_input(
     f"Type your medical question in {language.title()}..." 
