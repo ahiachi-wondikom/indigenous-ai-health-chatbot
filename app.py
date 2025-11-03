@@ -122,8 +122,8 @@ def load_models():
         embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
         
         # Translation model
-        translator = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
-        tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
+        translator = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-yo")  # Just Yoruba for testing
+        tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-yo")
         
         # Groq
         groq_client = Groq(api_key=groq_key)
