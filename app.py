@@ -16,13 +16,27 @@ load_dotenv()
 
 # ========== HELPER FUNCTION FOR SECRETS ==========
 def get_secret(key):
-    """Get secret from Streamlit Cloud or local .env"""
+    """Get secret from multiple sources with debugging"""
+    # Try environment variable first (for Docker/Hugging Face)
+    env_value = os.getenv(key)
+    if env_value:
+        st.write(f"✅ Found {key} in environment variables")
+        return env_value
+    
+    # Try Streamlit secrets
     try:
-        # Try Streamlit Cloud secrets first
-        return st.secrets[key]
+        secret_value = st.secrets[key]
+        st.write(f"✅ Found {key} in Streamlit secrets")
+        return secret_value
     except:
-        # Fall back to environment variable (local)
-        return os.getenv(key)
+        pass
+    
+    # Show available environment variables for debugging
+    st.error(f"❌ Could not find {key}")
+    st.write("Available environment variables:")
+    st.write([k for k in os.environ.keys() if 'KEY' in k or 'API' in k])
+    
+    raise ValueError(f"Secret '{key}' not found. Please add it in Hugging Face Settings → Variables")
 
 # ========== PAGE CONFIG ==========
 st.set_page_config(
@@ -111,8 +125,8 @@ def load_models():
     
     with st.spinner("🔄 Loading AI models... (First time takes 2-3 minutes)"):
         # Get API keys
-        pinecone_key = get_secret("PINECONEAPIKEY")
-        groq_key = get_secret("GROQAPIKEY")
+        pinecone_key = get_secret("PINECONE_API_KEY")
+        groq_key = get_secret("GROQ_API_KEY")
         
         # Pinecone
         pc = Pinecone(api_key=pinecone_key)
