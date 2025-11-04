@@ -3,5 +3,5 @@ python-dotenv
 sentence-transformers==2.7.0
 transformers
 torch
-pinecone-client
+pinecone>=3.0.0
 groq
