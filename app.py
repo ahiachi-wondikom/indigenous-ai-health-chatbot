@@ -111,8 +111,8 @@ def load_models():
     
     with st.spinner("🔄 Loading AI models... (First time takes 2-3 minutes)"):
         # Get API keys
-        pinecone_key = get_secret("PINECONE_API_KEY")
-        groq_key = get_secret("GROQ_API_KEY")
+        pinecone_key = get_secret("PINECONEAPIKEY")
+        groq_key = get_secret("GROQAPIKEY")
         
         # Pinecone
         pc = Pinecone(api_key=pinecone_key)
