@@ -16,20 +16,20 @@ load_dotenv()
 
 # ========== HELPER FUNCTION FOR SECRETS ==========
 def get_secret(key):
-    """Get secret from multiple sources with debugging"""
+    """Get secret from Streamlit Cloud or environment variable"""
     # Try environment variable first (for Docker/Hugging Face)
     env_value = os.getenv(key)
     if env_value:
-        st.write(f"✅ Found {key} in environment variables")
         return env_value
     
     # Try Streamlit secrets
     try:
-        secret_value = st.secrets[key]
-        st.write(f"✅ Found {key} in Streamlit secrets")
-        return secret_value
+        return st.secrets[key]
     except:
         pass
+    
+    # If not found, raise error
+    raise ValueError(f"Secret '{key}' not found. Please add it in Hugging Face Settings → Variables")
     
     # Show available environment variables for debugging
     st.error(f"❌ Could not find {key}")
